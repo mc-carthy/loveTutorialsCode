@@ -1,5 +1,7 @@
 function love.load()
-
+    ballX = love.graphics.getWidth() / 2
+    ballY = love.graphics.getHeight() / 2
+    ballRad = 5
 end
 
 function love.update(dt)
@@ -7,5 +9,5 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.circle('fill', love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 10)
+    love.graphics.circle('fill', ballX, ballY, ballRad)
 end
