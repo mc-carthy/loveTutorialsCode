@@ -45,10 +45,17 @@ function love.update(dt)
     if love.keyboard.isDown('down') then
         paddle2Y = paddle2Y + paddleSpeed * dt
     end
+
+    paddle1Y = math.clamp(paddle1Y, 0, love.graphics.getHeight() - paddleHeight)
+    paddle2Y = math.clamp(paddle2Y, 0, love.graphics.getHeight() - paddleHeight)
 end
 
 function love.draw()
     love.graphics.circle("fill", ballX, ballY, ballRad)
     love.graphics.rectangle('fill', paddle1X, paddle1Y, paddleWidth, paddleHeight)
     love.graphics.rectangle('fill', paddle2X, paddle2Y, paddleWidth, paddleHeight)
+end
+
+function math.clamp(value, min, max)
+    return math.max(math.min(value, max), min)
 end
