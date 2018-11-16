@@ -3,6 +3,13 @@ function love.load()
     ballY = love.graphics.getHeight() / 2
     ballRad = 5
     ballSpeedX, ballSpeedY = love.math.random(100, 200), love.math.random(100, 200)
+
+    paddleWidth = 10
+    paddleHeight = 80
+    paddle1X = 30
+    paddle1Y = 10
+    paddle2X = love.graphics.getWidth() - paddle1X - paddleWidth
+    paddle2Y = 10
 end
 
 function love.update(dt)
@@ -28,5 +35,7 @@ end
 
 function love.draw()
     love.graphics.circle("fill", ballX, ballY, ballRad)
+    love.graphics.rectangle('fill', paddle1X, paddle1Y, paddleWidth, paddleHeight)
+    love.graphics.rectangle('fill', paddle2X, paddle2Y, paddleWidth, paddleHeight)
     -- love.graphics.print(string.format("%.0f", ballX), 10, 10)
 end
