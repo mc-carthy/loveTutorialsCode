@@ -16,7 +16,7 @@ end
 function love.update(dt)
     ballX = ballX + ballSpeedX * dt
     ballY = ballY + ballSpeedY * dt
-    if ballX < 0 then
+    if ballX + ballRad < 0 then
         resetBall()
         player2Score = player2Score + 1
     end
