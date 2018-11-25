@@ -1,28 +1,61 @@
 function love.load()
-    resetBall()
+    currentState = 'mainMenu'
     ballRad = 5
-
     paddleWidth = 10
     paddleHeight = 80
+    resetMainGameState()
     paddleSpeed = 300
     paddle1X = 30
-    paddle1Y = 10
     player1Score = 0
     paddle2X = love.graphics.getWidth() - paddle1X - paddleWidth
-    paddle2Y = 10
     player2Score = 0
 end
 
 function love.update(dt)
+    if currentState == 'mainGame' then
+        updateMainGameState(dt)
+    end
+end
+
+function love.draw()
+    if currentState == 'mainMenu' then
+        drawMainMenuState()
+    elseif currentState == 'ready' then
+        drawReadyState()
+    elseif currentState == 'mainGame' then
+        drawMainGameState()
+    elseif currentState == 'endGame' then
+        drawEndGameState()
+    end
+end
+
+function love.keypressed(key)
+    if key == 'space' then
+        if currentState == 'mainMenu' then
+            currentState = 'ready'
+        elseif currentState == 'ready' then
+            currentState = 'mainGame'
+        elseif currentState == 'endGame' then
+            currentState = 'mainMenu'
+        end
+    end
+    if key == 'escape' then
+        love.event.quit()
+    end
+end
+
+function updateMainGameState(dt)
     ballX = ballX + ballSpeedX * dt
     ballY = ballY + ballSpeedY * dt
     if ballX + ballRad < 0 then
-        resetBall()
+        resetMainGameState()
         player2Score = player2Score + 1
+        currentState = 'ready'
     end
     if ballX > love.graphics.getWidth() then
-        resetBall()
+        resetMainGameState()
         player1Score = player1Score + 1
+        currentState = 'ready'
     end
     if ballY < 0 then
         ballY = 0
@@ -52,12 +85,22 @@ function love.update(dt)
     checkCollisions()
 end
 
-function love.draw()
+function drawMainGameState()
     love.graphics.circle("fill", ballX, ballY, ballRad)
     love.graphics.rectangle('fill', paddle1X, paddle1Y, paddleWidth, paddleHeight)
     love.graphics.rectangle('fill', paddle2X, paddle2Y, paddleWidth, paddleHeight)
     love.graphics.print('Player 1: ' .. player1Score, 10, 10)
     love.graphics.print('Player 2: ' .. player2Score, love.graphics.getWidth() - 75, 10)
+end
+
+function drawMainMenuState()
+    love.graphics.print('Main menu\nPress space to begin match', 10, 10)
+end
+function drawReadyState()
+    love.graphics.print('Ready?\nPress space to serve', 10, 10)
+end
+function drawEndGameState()
+    love.graphics.print('Game Over\nPress space to return to main menu', 10, 10)
 end
 
 function math.clamp(value, min, max)
@@ -86,8 +129,13 @@ function checkCollisions()
     end
 end
 
-function resetBall()
+function resetMainGameState()
     ballX = love.graphics.getWidth() / 2
     ballY = love.graphics.getHeight() / 2
     ballSpeedX, ballSpeedY = love.math.random(100, 200), love.math.random(100, 200)
+    if love.math.random() > 0.5 then
+        ballSpeedX = ballSpeedX * -1
+    end
+    paddle1Y = love.graphics.getHeight() / 2 - paddleHeight
+    paddle2Y = love.graphics.getHeight() / 2 - paddleHeight
 end
