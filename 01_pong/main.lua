@@ -9,6 +9,8 @@ function love.load()
     player1Score = 0
     paddle2X = love.graphics.getWidth() - paddle1X - paddleWidth
     player2Score = 0
+    maxScore = 5
+    gameOverMessage = ''
 end
 
 function love.update(dt)
@@ -50,12 +52,22 @@ function updateMainGameState(dt)
     if ballX + ballRad < 0 then
         resetMainGameState()
         player2Score = player2Score + 1
-        currentState = 'ready'
+        if player2Score >= maxScore then
+            currentState = 'endGame'
+            gameOverMessage = 'Player 2 wins!\nPress space to return to main menu'
+        else
+            currentState = 'ready'
+        end
     end
     if ballX > love.graphics.getWidth() then
         resetMainGameState()
         player1Score = player1Score + 1
-        currentState = 'ready'
+        if player1Score >= maxScore then
+            currentState = 'endGame'
+            gameOverMessage = 'Player 1 wins!\nPress space to return to main menu'
+        else
+            currentState = 'ready'
+        end
     end
     if ballY < 0 then
         ballY = 0
@@ -100,7 +112,7 @@ function drawReadyState()
     love.graphics.print('Ready?\nPress space to serve', 10, 10)
 end
 function drawEndGameState()
-    love.graphics.print('Game Over\nPress space to return to main menu', 10, 10)
+    love.graphics.print(gameOverMessage, 10, 10)
 end
 
 function math.clamp(value, min, max)
