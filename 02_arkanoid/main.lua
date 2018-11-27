@@ -85,6 +85,16 @@ function ball.update(dt)
 end
 
 function ball.draw()
+    if collisionCheck(ball, paddle) then
+        love.graphics.print('Paddle collision!', 10, 10)
+    end
+
+    for _, b in pairs(bricks.levelbricks) do
+        if collisionCheck(ball, b) then
+            love.graphics.print('Brick collision!', 10, 10)
+        end
+    end
+
     love.graphics.circle('fill', ball.x, ball.y, ball.r)
 end
 
@@ -114,4 +124,12 @@ end
 
 function math.clamp(value, min, max)
     return math.max(math.min(value, max), min)
+end
+
+function collisionCheck(ball, other)
+    return
+        ball.x - ball.r / 2 < other.x + other.w and
+        ball.x + ball.r / 2 > other.x and
+        ball.y - ball.r / 2 < other.y + other.h and
+        ball.y + ball.r / 2 > other.y 
 end
