@@ -23,6 +23,21 @@ function love.load()
 end
 
 function love.update(dt)
+    paddle.update(dt)
+end
+
+function love.draw()
+    paddle.draw()
+    bricks.drawbricks()
+end
+
+function love.keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
+end
+
+function paddle.update(dt)
     local dx = 0
     if love.keyboard.isDown("a") then
         dx = dx - 1
@@ -34,15 +49,8 @@ function love.update(dt)
     paddle.x = math.clamp(paddle.x, 0, love.graphics.getWidth() - paddle.w)
 end
 
-function love.draw()
+function paddle.draw()
     love.graphics.rectangle("fill", paddle.x, paddle.y, paddle.w, paddle.h)
-    bricks.drawbricks()
-end
-
-function love.keypressed(key)
-    if key == "escape" then
-        love.event.quit()
-    end
 end
 
 function bricks.createbricks()
