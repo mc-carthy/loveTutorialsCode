@@ -1,4 +1,5 @@
 paddle = {}
+ball = {}
 bricks = {}
 brick = {}
 
@@ -8,6 +9,12 @@ function love.load()
     paddle.y = love.graphics.getHeight() - 100
     paddle.x = love.graphics.getWidth() / 2 - paddle.w / 2
     paddle.speed = 400
+
+    ball.r = 5
+    ball.x = love.graphics.getWidth() / 2
+    ball.y = paddle.y - 20
+    ball.speedX = 200
+    ball.speedY = -200
 
     brick.w = 80
     brick.h = 20
@@ -24,10 +31,12 @@ end
 
 function love.update(dt)
     paddle.update(dt)
+    ball.update(dt)
 end
 
 function love.draw()
     paddle.draw()
+    ball.draw()
     bricks.drawbricks()
 end
 
@@ -51,6 +60,32 @@ end
 
 function paddle.draw()
     love.graphics.rectangle("fill", paddle.x, paddle.y, paddle.w, paddle.h)
+end
+
+function ball.update(dt)
+    ball.x = ball.x + ball.speedX * dt
+    ball.y = ball.y + ball.speedY * dt
+
+    if ball.x < 0 then
+        ball.x = 0
+        ball.speedX = -ball.speedX
+    end
+    if ball.x > love.graphics.getWidth() then
+        ball.x = love.graphics.getWidth()
+        ball.speedX = -ball.speedX
+    end
+    if ball.y < 0 then
+        ball.y = 0
+        ball.speedY = -ball.speedY
+    end
+    if ball.y > love.graphics.getHeight() then
+        ball.y = love.graphics.getHeight()
+        ball.speedY = -ball.speedY
+    end
+end
+
+function ball.draw()
+    love.graphics.circle('fill', ball.x, ball.y, ball.r)
 end
 
 function bricks.createbricks()
