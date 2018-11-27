@@ -16,6 +16,7 @@ function love.update(dt)
         dx = dx + 1
     end
     paddle.x = paddle.x + dx * paddle.speed * dt
+    paddle.x = math.clamp(paddle.x, 0, love.graphics.getWidth() - paddle.w)
 end
 
 function love.draw()
@@ -26,4 +27,8 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     end
+end
+
+function math.clamp(value, min, max)
+    return math.max(math.min(value, max), min)
 end
