@@ -31,6 +31,7 @@ end
 
 function love.update(dt)
     paddle.update(dt)
+    bricks.update(dt)
     ball.update(dt)
 end
 
@@ -56,6 +57,7 @@ function paddle.update(dt)
     end
     paddle.x = paddle.x + dx * paddle.speed * dt
     paddle.x = math.clamp(paddle.x, 0, love.graphics.getWidth() - paddle.w)
+    paddle.checkBallCollision(paddle, ball)
 end
 
 function paddle.draw()
@@ -84,17 +86,19 @@ function ball.update(dt)
     end
 end
 
-function ball.draw()
-    if collisionCheck(ball, paddle) then
-        love.graphics.print('Paddle collision!', 10, 10)
-    end
+function paddle.checkBallCollision(paddle, ball)
+    collisionCheck(ball, paddle)
+end
 
-    for _, b in pairs(bricks.levelbricks) do
+function bricks.checkBallCollision(bricks, ball)
+    for i, b in ipairs(bricks.levelbricks) do
         if collisionCheck(ball, b) then
-            love.graphics.print('Brick collision!', 10, 10)
+            table.remove(bricks.levelbricks, i)
         end
     end
+end
 
+function ball.draw()
     love.graphics.circle('fill', ball.x, ball.y, ball.r)
 end
 
@@ -114,6 +118,10 @@ function bricks.createBrick(x, y, w, h)
     b.w = w or brick.w
     b.h = h or brick.h
     return b
+end
+
+function bricks.update(dt)
+    bricks.checkBallCollision(bricks, ball)
 end
 
 function bricks.drawbricks()
@@ -148,6 +156,7 @@ function collisionCheck(ball, other)
             ball.y = ball.y - msv.y
             ball.speedY = -ball.speedY
         end
+        return true
     else
         return false
     end
