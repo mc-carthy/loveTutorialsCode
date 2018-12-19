@@ -3,19 +3,19 @@ local bricks = require('src.bricks')
 local paddle = require('src.paddle')
 
 function love.load()
-    bricks.createbricks()
+    bricks.createBricks()
 end
 
 function love.update(dt)
     paddle.update(dt, ball)
     bricks.update(dt, ball)
-    ball.update(dt, paddle, bricks.levelbricks)
+    ball.update(dt, paddle, bricks.levelBricks)
 end
 
 function love.draw()
     paddle.draw()
     ball.draw()
-    bricks.drawbricks()
+    bricks.drawBricks()
 end
 
 function love.keypressed(key)
