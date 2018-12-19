@@ -9,7 +9,7 @@ end
 function love.update(dt)
     paddle.update(dt, ball)
     bricks.update(dt, ball)
-    ball.update(dt)
+    ball.update(dt, paddle, bricks.levelbricks)
 end
 
 function love.draw()
@@ -41,18 +41,9 @@ function collisionCheck(ball, other)
         ballRect.y < other.y + other.h and
         ballRect.y + ballRect.h > other.y 
     then
-        local msv = getMinimumSeparationVector(ballRect, other)
-        if msv.x ~= 0 then
-            ball.x = ball.x - msv.x
-            ball.speedX = -ball.speedX
-        end
-        if msv.y ~= 0 then
-            ball.y = ball.y - msv.y
-            ball.speedY = -ball.speedY
-        end
-        return true
+        return getMinimumSeparationVector(ballRect, other)
     else
-        return false
+        return nil
     end
 end
 
