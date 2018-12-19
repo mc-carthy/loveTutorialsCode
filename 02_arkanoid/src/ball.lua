@@ -24,7 +24,7 @@ function ball.checkPaddleCollision(ball, paddle)
 end
 
 function ball.checkBricksCollision(ball, bricks)
-    for _, b in pairs(bricks) do
+    for i, b in ipairs(bricks) do
         local msv = collisionCheck(ball, b)
         
         if msv ~= nil then
@@ -36,6 +36,7 @@ function ball.checkBricksCollision(ball, bricks)
                 ball.y = ball.y - msv.y
                 ball.speedY = -ball.speedY
             end
+            table.remove(bricks, i)
             break
         end
     end

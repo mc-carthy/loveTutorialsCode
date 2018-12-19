@@ -19,14 +19,6 @@ function bricks.createBricks()
     end
 end
 
-function bricks.checkBallCollision(bricks, ball)
-    for i, b in ipairs(bricks.levelBricks) do
-        if collisionCheck(ball, b) then
-            table.remove(bricks.levelBricks, i)
-        end
-    end
-end
-
 function bricks.createBrick(x, y, w, h)
     local b = {}
     b.x = x
@@ -34,10 +26,6 @@ function bricks.createBrick(x, y, w, h)
     b.w = w or bricks.w
     b.h = h or bricks.h
     return b
-end
-
-function bricks.update(dt, ball)
-    bricks.checkBallCollision(bricks, ball)
 end
 
 function bricks.drawBricks()
