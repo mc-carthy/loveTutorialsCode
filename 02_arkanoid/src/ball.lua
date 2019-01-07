@@ -37,7 +37,6 @@ function ball.checkBricksCollision(ball, bricks)
                 ball.speedY = -ball.speedY
             end
             table.remove(bricks, i)
-            break
         end
     end
 end

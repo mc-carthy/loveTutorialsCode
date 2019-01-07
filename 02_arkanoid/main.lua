@@ -8,7 +8,6 @@ end
 
 function love.update(dt)
     paddle.update(dt, ball)
-    bricks.update(dt, ball)
     ball.update(dt, paddle, bricks.levelBricks)
 end
 
